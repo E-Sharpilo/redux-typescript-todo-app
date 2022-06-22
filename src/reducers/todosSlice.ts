@@ -33,10 +33,13 @@ const todoSlice = createSlice({
           todo.isCompleted = !todo.isCompleted
         }
       })
+    },
+    deleteTodo: (state, action) => {
+      state.todoList.splice( state.todoList.findIndex(todo => todo.id === action.payload), 1)
     }
   }
 })
 
-export const { saveTodo, setCheck } = todoSlice.actions
+export const { saveTodo, setCheck, deleteTodo } = todoSlice.actions
 export const selectTodoList = (state: { todos: { todoList: Todo[]; }; }) => state.todos.todoList
 export default todoSlice.reducer;
