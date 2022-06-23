@@ -1,4 +1,4 @@
-import React from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { deleteAllTodo } from "../../reducers/todosSlice";
 
@@ -25,9 +25,9 @@ type Props = {
 export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
   const dispatch = useDispatch()
 
-  const clearCompeted = () => {
-    dispatch(deleteAllTodo({}))
-  }
+  const clearCompeted = useCallback(() => {
+    dispatch(deleteAllTodo())
+  }, [dispatch])
 
   return (
     <footer className="footer">

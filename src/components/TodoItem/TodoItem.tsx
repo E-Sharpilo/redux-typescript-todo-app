@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setCheck, deleteTodo } from "../../reducers/todosSlice";
+import { Todo } from "../../interfaces/todos";
 
 export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
   const dispatch = useDispatch()

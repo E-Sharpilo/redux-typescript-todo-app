@@ -1,7 +1,8 @@
 import { TodoItem } from '../TodoItem/TodoItem';
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from 'react-redux';
 import { toggleAll } from '../../reducers/todosSlice';
+import { Todo } from '../../interfaces/todos';
 
 type Props = {
   tasksList: Todo[]
@@ -9,9 +10,9 @@ type Props = {
 
 export const TodoList: React.FC<Props> = ({ tasksList }) => {
   const dispatch = useDispatch()
-  const toggleAllTasks = () => {
-    dispatch(toggleAll({}))
-  }
+  const toggleAllTasks = useCallback(() => {
+    dispatch(toggleAll())
+  }, [dispatch])
 
   return (
     <section className="main">

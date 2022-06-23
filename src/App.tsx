@@ -1,10 +1,11 @@
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { TodoList } from "./components/TodoList/TodoList";
-import React, { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
-import { saveTodo, selectTodoList } from "./reducers/todosSlice";
+import { saveTodo } from "./reducers/todosSlice";
+import { selectTodoList } from "./selectors/selectTodoList";
 
 const App: React.FC = () => {
   const tasksList = useSelector(selectTodoList)
@@ -12,29 +13,24 @@ const App: React.FC = () => {
 
   const [activeFilter, setActiveFilter] = useState('all')
   const [todoTitle, setTodoTitle] = useState<string>('')
-  const isTasksExist = tasksList && tasksList.length > 0
 
-  const handleInputChange = (value: Todo['title']) => {
-    setTodoTitle(value)
-  }
-
-  const addTodo = () => {
+  const addTodo = useCallback(() => {
     dispatch(saveTodo({
       id: Date.now().toString(),
       title: todoTitle,
       isCompleted: false
     }))
-  }
+  }, [dispatch, todoTitle])
 
-  const taskCount = () => {
+  const taskCount = useMemo(() => {
     return tasksList.filter(todo => todo.isCompleted === false).length
-  }
+  }, [tasksList])
 
   return (
     <section className="todoapp">
-      <Header addTodo={addTodo} handleInputChange={handleInputChange} todoTitle={todoTitle} />
+      <Header addTodo={addTodo} setTodoTitle={setTodoTitle} todoTitle={todoTitle} />
       <TodoList tasksList={tasksList} />
-      {!!tasksList.length && <Footer count={taskCount()} activeFilter={activeFilter} />}
+      {!!tasksList.length && <Footer count={taskCount} activeFilter={activeFilter} />}
     </section>
   )
 }
