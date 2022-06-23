@@ -34,7 +34,7 @@ const App: React.FC = () => {
     <section className="todoapp">
       <Header addTodo={addTodo} handleInputChange={handleInputChange} todoTitle={todoTitle} />
       <TodoList tasksList={tasksList} />
-      <Footer count={taskCount()} activeFilter={activeFilter} />
+      {!!tasksList.length && <Footer count={taskCount()} activeFilter={activeFilter} />}
     </section>
   )
 }
