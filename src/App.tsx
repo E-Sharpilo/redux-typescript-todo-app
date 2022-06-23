@@ -29,7 +29,7 @@ const App: React.FC = () => {
     return tasksList.filter(todo => todo.isCompleted === false).length
   }, [tasksList])
 
-  const filterTasks = (tasksList: Todo[], activeFilter: string) => {
+  const filterTasks = useCallback((tasksList: Todo[], activeFilter: string) => {
     switch (activeFilter) {
       case 'completed':
         return tasksList.filter(task => task.isCompleted)
@@ -40,15 +40,21 @@ const App: React.FC = () => {
       default:
         return tasksList
     }
-  }
+  }, [])
 
-  const filteredTasks = filterTasks(tasksList, activeFilter)
+  const filteredTasks = useMemo(() => {
+    return filterTasks(tasksList, activeFilter)
+  }, [activeFilter, filterTasks, tasksList])
+
+  const completedCount = useMemo(() => {
+    return tasksList.filter(todo => todo.isCompleted === true).length
+  }, [tasksList])
 
   return (
     <section className="todoapp">
       <Header addTodo={addTodo} setTodoTitle={setTodoTitle} todoTitle={todoTitle} />
       <TodoList tasksList={filteredTasks} />
-      {!!tasksList.length && <Footer count={taskCount} activeFilter={activeFilter} />}
+      {!!tasksList.length && <Footer completedCount={completedCount} count={taskCount} activeFilter={activeFilter} />}
     </section>
   )
 }

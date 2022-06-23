@@ -47,9 +47,22 @@ const todoSlice = createSlice({
       } else {
         state.todoList.forEach(todo => todo.isCompleted = true);
       }
+    },
+    changeTitleTodo: (state, action) => {
+      state.todoList.forEach(todo => {
+        if (action.payload.id === todo.id) {
+          todo.title = action.payload.title
+        }
+      })
     }
   }
 })
 
-export const { saveTodo, setCheck, deleteTodo, deleteAllTodo, toggleAll } = todoSlice.actions
+export const {
+  saveTodo,
+  setCheck,
+  deleteTodo,
+  deleteAllTodo,
+  toggleAll,
+  changeTitleTodo } = todoSlice.actions
 export default todoSlice.reducer;

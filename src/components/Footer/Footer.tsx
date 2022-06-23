@@ -21,9 +21,10 @@ const FILTERS_BTN = [
 type Props = {
   count: number,
   activeFilter: string;
+  completedCount: number
 }
 
-const Footer: React.FC<Props> = ({ count, activeFilter }) => {
+const Footer: React.FC<Props> = ({ count, activeFilter, completedCount }) => {
   const dispatch = useDispatch()
 
   const clearCompeted = useCallback(() => {
@@ -46,20 +47,20 @@ const Footer: React.FC<Props> = ({ count, activeFilter }) => {
             <a
               href={`#/${id}`}
               className={id === activeFilter ? 'selected' : ''}
-              onClick={() => {filterChange(id)}}
+              onClick={() => { filterChange(id) }}
             >
               {text}
             </a>
           </li>
         ))}
       </ul>
-      <button
+      { completedCount > 0 && (<button
         type="button"
         className="clear-completed"
         onClick={clearCompeted}
       >
         Clear completed
-      </button>
+      </button>)}
     </footer >
   )
 }
