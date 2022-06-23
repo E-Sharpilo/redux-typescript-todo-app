@@ -26,11 +26,15 @@ const App: React.FC = () => {
     }))
   }
 
+  const taskCount = () => {
+    return tasksList.filter(todo => todo.isCompleted === false).length
+  }
+
   return (
     <section className="todoapp">
       <Header addTodo={addTodo} handleInputChange={handleInputChange} todoTitle={todoTitle} />
       <TodoList tasksList={tasksList} />
-      <Footer count={tasksList.length} activeFilter={activeFilter} />
+      <Footer count={taskCount()} activeFilter={activeFilter} />
     </section>
   )
 }

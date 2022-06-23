@@ -23,19 +23,16 @@ type Props = {
 }
 
 export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
-  const dispath = useDispatch()
+  const dispatch = useDispatch()
 
   const clearCompeted = () => {
-    dispath(deleteAllTodo({
-      type: 'DELETE_ALL',
-      some: 'wqewqe'
-    }))
+    dispatch(deleteAllTodo({}))
   }
 
   return (
     <footer className="footer">
       <span className="todo-count">
-        {`${count} items left`}
+        {`${ count } ${count === 1 ? 'item' : 'items' } left`}
       </span>
 
       <ul className="filters">
