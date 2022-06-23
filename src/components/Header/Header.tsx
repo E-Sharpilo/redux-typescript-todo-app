@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import React, { useCallback } from "react"
 
 type Props = {
   setTodoTitle: (value: string) => void
@@ -6,7 +6,7 @@ type Props = {
   todoTitle: string
 }
 
-export const Header: React.FC<Props> = ({ addTodo, setTodoTitle, todoTitle }) => {
+const Header: React.FC<Props> = ({ addTodo, setTodoTitle, todoTitle }) => {
 
   const submitHandle = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -38,3 +38,5 @@ export const Header: React.FC<Props> = ({ addTodo, setTodoTitle, todoTitle }) =>
     </header>
   );
 }
+
+export default React.memo(Header)

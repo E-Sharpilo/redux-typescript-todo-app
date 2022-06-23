@@ -8,7 +8,7 @@ type Props = {
   tasksList: Todo[]
 }
 
-export const TodoList: React.FC<Props> = ({ tasksList }) => {
+const TodoList: React.FC<Props> = ({ tasksList }) => {
   const dispatch = useDispatch()
   const toggleAllTasks = useCallback(() => {
     dispatch(toggleAll())
@@ -38,3 +38,5 @@ export const TodoList: React.FC<Props> = ({ tasksList }) => {
     </ section>
   )
 }
+
+export default React.memo(TodoList)

@@ -1,6 +1,7 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { deleteAllTodo } from "../../reducers/todosSlice";
+import { changeFilter } from "../../reducers/filterSlice";
 
 const FILTERS_BTN = [
   {
@@ -22,17 +23,21 @@ type Props = {
   activeFilter: string;
 }
 
-export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
+const Footer: React.FC<Props> = ({ count, activeFilter }) => {
   const dispatch = useDispatch()
 
   const clearCompeted = useCallback(() => {
     dispatch(deleteAllTodo())
   }, [dispatch])
 
+  const filterChange = useCallback((id: string) => {
+    dispatch(changeFilter(id))
+  }, [dispatch])
+
   return (
     <footer className="footer">
       <span className="todo-count">
-        {`${ count } ${count === 1 ? 'item' : 'items' } left`}
+        {`${count} ${count === 1 ? 'item' : 'items'} left`}
       </span>
 
       <ul className="filters">
@@ -41,6 +46,7 @@ export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
             <a
               href={`#/${id}`}
               className={id === activeFilter ? 'selected' : ''}
+              onClick={() => {filterChange(id)}}
             >
               {text}
             </a>
@@ -57,3 +63,5 @@ export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
     </footer >
   )
 }
+
+export default React.memo(Footer)
