@@ -1,6 +1,18 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setCheck, deleteTodo } from "../../reducers/todosSlice";
+import { Todo } from "../../interfaces/todos";
 
 export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
+  const dispatch = useDispatch()
+  const handleCheck = () => {
+    dispatch(setCheck(id))
+  }
+
+  const handleDelete = () => {
+    dispatch(deleteTodo(id))
+  }
+
   return (
     <li
       className={isCompleted ? 'completed' : ''}
@@ -9,8 +21,10 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
         <input
           type="checkbox"
           className="toggle"
-          readOnly
-          checked={isCompleted} />
+          checked={isCompleted}
+          onChange={handleCheck}
+
+        />
         <label htmlFor={id}>
           {title}
           <input hidden />
@@ -18,6 +32,7 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
         <button
           type="button"
           className="destroy"
+          onClick={handleDelete}
         ></button>
       </div>
       <input
