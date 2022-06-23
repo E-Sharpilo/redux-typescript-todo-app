@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { deleteAllTodo } from "../../reducers/todosSlice";
 
 const FILTERS_BTN = [
   {
@@ -21,6 +23,15 @@ type Props = {
 }
 
 export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
+  const dispath = useDispatch()
+
+  const clearCompeted = () => {
+    dispath(deleteAllTodo({
+      type: 'DELETE_ALL',
+      some: 'wqewqe'
+    }))
+  }
+
   return (
     <footer className="footer">
       <span className="todo-count">
@@ -42,6 +53,7 @@ export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
       <button
         type="button"
         className="clear-completed"
+        onClick={clearCompeted}
       >
         Clear completed
       </button>
