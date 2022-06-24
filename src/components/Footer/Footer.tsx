@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { deleteAllTasks } from "../../reducers/tasks";
+
 
 
 const FILTERS_BTN = [
@@ -29,7 +29,7 @@ const Footer: React.FC<Props> = ({ count, activeFilter, completedCount, filterCh
   const dispatch = useDispatch()
 
   const clearCompeted = useCallback(() => {
-    dispatch(deleteAllTasks())
+    // dispatch(deleteAllTasks())
   }, [dispatch])
 
 

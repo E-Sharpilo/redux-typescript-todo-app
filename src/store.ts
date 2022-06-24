@@ -1,13 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import todoReducer from './reducers/tasks'
+import taskReducer from './reducers/tasks'
 import filterReducer from './reducers/filter'
+import { useDispatch } from 'react-redux'
 
 export const store = configureStore({
   reducer: {
-    tasks: todoReducer,
+    tasks: taskReducer,
     filter: filterReducer
   }
 })
+
+
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppDispatch = useDispatch
  
 
 

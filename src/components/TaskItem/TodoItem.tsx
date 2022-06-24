@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCheck, deleteTask, changeTitleTask } from "../../reducers/tasks";
 import { Task } from "../../types/task";
 import classNames from 'classnames';
 
-const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
+const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
   const [newTitle, setNewTitle] = useState(title)
   const [isEditing, setIsEditing] = useState(false)
   const inputElement = useRef<HTMLInputElement>(null)
@@ -18,28 +17,28 @@ const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
 
   const dispatch = useDispatch()
   const handleCheck = useCallback(() => {
-    dispatch(setCheck(id))
+    // dispatch(setCheck(id))
   }, [dispatch, id])
 
   const handleDelete = useCallback(() => {
-    dispatch(deleteTask(id))
+    // dispatch(deleteTask(id))
   }, [dispatch, id])
 
   const changeTitleEnter = useCallback((event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
-      dispatch(changeTitleTask({
-        id,
-        title: newTitle
-      }))
+      // dispatch(changeTitleTask({
+      //   id,
+      //   title: newTitle
+      // }))
       setIsEditing(false)
     }
   }, [dispatch, id, newTitle])
 
   const changeTitleOnBlur = useCallback(() => {
-    dispatch(changeTitleTask({
-      id,
-      title: newTitle
-    }))
+    // dispatch(changeTitleTask({
+    //   id,
+    //   title: newTitle
+    // }))
     setIsEditing(false)
   }, [dispatch, id, newTitle])
 
@@ -67,7 +66,7 @@ const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
           <input
             type="checkbox"
             className="toggle"
-            checked={isCompleted}
+            checked={completed}
             onChange={handleCheck}
           />
           <label>
@@ -95,7 +94,7 @@ const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
     ) : (
       <li
       className={classNames({
-        'completed': isCompleted,
+        'completed': completed,
       })}
       onDoubleClick={handleDblClick}
     >
@@ -103,7 +102,7 @@ const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
         <input
           type="checkbox"
           className="toggle"
-          checked={isCompleted}
+          checked={completed}
           onChange={handleCheck}
         />
         <label>

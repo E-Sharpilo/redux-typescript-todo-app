@@ -11,8 +11,8 @@ const TodoList: React.FC<Props> = ({ tasksList }) => {
     <section className="main">
       <ul className="todo-list">
         {
-          tasksList.map(({ id, title, isCompleted }) => (
-            <TaskItem key={id} id={id} title={title} isCompleted={isCompleted} />
+          tasksList.map(({ id, title, completed }) => (
+            <TaskItem key={id} id={id} title={title} completed={completed} />
           ))
         }
       </ul>
