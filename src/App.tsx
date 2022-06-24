@@ -4,14 +4,14 @@ import TodoList from "./components/TaskList/TodoList";
 import { useCallback, useMemo, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
-import { saveTodo } from "./reducers/tasks";
-import { selectTodoList } from "./selectors/tasks";
+import { saveTask } from "./reducers/tasks";
+import { selectTasksList } from "./selectors/tasks";
 import { selectFilter } from "./selectors/filter";
 import { Task } from "./types/task";
 import { changeFilter } from "./reducers/filter";
 
 const App: React.FC = () => {
-  const tasksList = useSelector(selectTodoList)
+  const tasksList = useSelector(selectTasksList)
   const activeFilter = useSelector(selectFilter)
 
   const dispatch = useDispatch()
@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const [todoTitle, setTodoTitle] = useState<string>('')
 
   const addTodo = useCallback(() => {
-    dispatch(saveTodo({
+    dispatch(saveTask({
       id: Date.now().toString(),
       title: todoTitle,
       isCompleted: false

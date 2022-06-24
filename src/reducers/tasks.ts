@@ -21,11 +21,11 @@ const initialState: { taskList: Task[] } = {
   ]
 }
 
-const todoSlice = createSlice({
+const taskSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    saveTodo: (state, action) => {
+    saveTask: (state, action) => {
       state.taskList.push(action.payload)
     },
     setCheck: (state, action) => {
@@ -35,10 +35,10 @@ const todoSlice = createSlice({
         }
       })
     },
-    deleteTodo: (state, action) => {
+    deleteTask: (state, action) => {
       state.taskList = state.taskList.filter(todo => todo.id !== action.payload)
     },
-    deleteAllTodo: (state) => {
+    deleteAllTasks: (state) => {
       state.taskList = state.taskList.filter(todo => todo.isCompleted === false)
     },
     toggleAll: (state) => {
@@ -48,7 +48,7 @@ const todoSlice = createSlice({
         state.taskList.forEach(task => task.isCompleted = true);
       }
     },
-    changeTitleTodo: (state, action) => {
+    changeTitleTask: (state, action) => {
       state.taskList.forEach(task => {
         if (action.payload.id === task.id) {
           task.title = action.payload.title
@@ -59,10 +59,10 @@ const todoSlice = createSlice({
 })
 
 export const {
-  saveTodo,
+  saveTask,
   setCheck,
-  deleteTodo,
-  deleteAllTodo,
+  deleteTask,
+  deleteAllTasks,
   toggleAll,
-  changeTitleTodo } = todoSlice.actions
-export default todoSlice.reducer;
+  changeTitleTask} = taskSlice.actions
+export default taskSlice.reducer;

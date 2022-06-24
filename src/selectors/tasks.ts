@@ -1,3 +1,3 @@
 import { State } from "../types/state";
 
-export const selectTodoList = (state: State) => state.tasks.taskList
+export const selectTasksList = (state: State) => state.tasks.taskList

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCheck, deleteTodo, changeTitleTodo } from "../../reducers/tasks";
+import { setCheck, deleteTask, changeTitleTask } from "../../reducers/tasks";
 import { Task } from "../../types/task";
 import classNames from 'classnames';
 
@@ -22,12 +22,12 @@ const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
   }, [dispatch, id])
 
   const handleDelete = useCallback(() => {
-    dispatch(deleteTodo(id))
+    dispatch(deleteTask(id))
   }, [dispatch, id])
 
   const changeTitleEnter = useCallback((event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
-      dispatch(changeTitleTodo({
+      dispatch(changeTitleTask({
         id,
         title: newTitle
       }))
@@ -36,7 +36,7 @@ const TodoItem: React.FC<Task> = ({ title, isCompleted, id }) => {
   }, [dispatch, id, newTitle])
 
   const changeTitleOnBlur = useCallback(() => {
-    dispatch(changeTitleTodo({
+    dispatch(changeTitleTask({
       id,
       title: newTitle
     }))
