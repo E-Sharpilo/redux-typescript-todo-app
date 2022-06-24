@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { deleteAllTodo } from "../../reducers/todosSlice";
+
 
 const FILTERS_BTN = [
   {
@@ -18,13 +21,23 @@ const FILTERS_BTN = [
 type Props = {
   count: number,
   activeFilter: string;
+  completedCount: number
+  filterChange: (id: string) => any
 }
 
-export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
+const Footer: React.FC<Props> = ({ count, activeFilter, completedCount, filterChange }) => {
+  const dispatch = useDispatch()
+
+  const clearCompeted = useCallback(() => {
+    dispatch(deleteAllTodo())
+  }, [dispatch])
+
+
+
   return (
     <footer className="footer">
       <span className="todo-count">
-        {`${count} items left`}
+        {`${count} ${count === 1 ? 'item' : 'items'} left`}
       </span>
 
       <ul className="filters">
@@ -33,18 +46,22 @@ export const Footer: React.FC<Props> = ({ count, activeFilter }) => {
             <a
               href={`#/${id}`}
               className={id === activeFilter ? 'selected' : ''}
+              onClick={filterChange(id)}
             >
               {text}
             </a>
           </li>
         ))}
       </ul>
-      <button
+      { completedCount > 0 && (<button
         type="button"
         className="clear-completed"
+        onClick={clearCompeted}
       >
         Clear completed
-      </button>
+      </button>)}
     </footer >
   )
 }
+
+export default React.memo(Footer)
