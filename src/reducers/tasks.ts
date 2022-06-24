@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Todo } from "../interfaces/todos";
+import { Task } from "../types/task";
 
-const initialState: { todoList: Todo[] } = {
-  todoList: [
+const initialState: { taskList: Task[] } = {
+  taskList: [
     {
       id: '1',
       title: 'Todo something',
@@ -22,36 +22,36 @@ const initialState: { todoList: Todo[] } = {
 }
 
 const todoSlice = createSlice({
-  name: 'todos',
+  name: 'tasks',
   initialState,
   reducers: {
     saveTodo: (state, action) => {
-      state.todoList.push(action.payload)
+      state.taskList.push(action.payload)
     },
     setCheck: (state, action) => {
-      state.todoList.forEach(todo => {
-        if (action.payload === todo.id) {
-          todo.isCompleted = !todo.isCompleted
+      state.taskList.forEach(task => {
+        if (action.payload === task.id) {
+          task.isCompleted = !task.isCompleted
         }
       })
     },
     deleteTodo: (state, action) => {
-      state.todoList = state.todoList.filter(todo => todo.id !== action.payload)
+      state.taskList = state.taskList.filter(todo => todo.id !== action.payload)
     },
     deleteAllTodo: (state) => {
-      state.todoList = state.todoList.filter(todo => todo.isCompleted === false)
+      state.taskList = state.taskList.filter(todo => todo.isCompleted === false)
     },
     toggleAll: (state) => {
-      if (state.todoList.filter(todo => !todo.isCompleted).length === 0) {
-        state.todoList.forEach(todo => todo.isCompleted = false);
+      if (state.taskList.filter(task => !task.isCompleted).length === 0) {
+        state.taskList.forEach(task => task.isCompleted = false);
       } else {
-        state.todoList.forEach(todo => todo.isCompleted = true);
+        state.taskList.forEach(task => task.isCompleted = true);
       }
     },
     changeTitleTodo: (state, action) => {
-      state.todoList.forEach(todo => {
-        if (action.payload.id === todo.id) {
-          todo.title = action.payload.title
+      state.taskList.forEach(task => {
+        if (action.payload.id === task.id) {
+          task.title = action.payload.title
         }
       })
     }

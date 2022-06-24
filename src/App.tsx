@@ -1,14 +1,14 @@
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
-import TodoList from "./components/TodoList/TodoList";
+import TodoList from "./components/TaskList/TodoList";
 import { useCallback, useMemo, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 
-import { saveTodo } from "./reducers/todosSlice";
-import { selectTodoList } from "./selectors/selectTodoList";
-import { selectFilter } from "./selectors/selectFilter";
-import { Todo } from "./interfaces/todos";
-import { changeFilter } from "./reducers/filterSlice";
+import { saveTodo } from "./reducers/tasks";
+import { selectTodoList } from "./selectors/tasks";
+import { selectFilter } from "./selectors/filter";
+import { Task } from "./types/task";
+import { changeFilter } from "./reducers/filter";
 
 const App: React.FC = () => {
   const tasksList = useSelector(selectTodoList)
@@ -30,7 +30,7 @@ const App: React.FC = () => {
     return tasksList.filter(todo => todo.isCompleted === false).length
   }, [tasksList])
 
-  const filterTasks = useCallback((tasksList: Todo[], activeFilter: string) => {
+  const filterTasks = useCallback((tasksList: Task[], activeFilter: string) => {
     switch (activeFilter) {
       case 'completed':
         return tasksList.filter(task => task.isCompleted)
@@ -57,7 +57,7 @@ const App: React.FC = () => {
 
   return (
     <section className="todoapp">
-      <Header addTodo={addTodo} setTodoTitle={setTodoTitle} todoTitle={todoTitle} />
+      <Header addTask={addTodo} setTodoTitle={setTodoTitle} todoTitle={todoTitle} />
       <TodoList tasksList={filteredTasks} />
       {!!tasksList.length && <Footer completedCount={completedCount} count={taskCount} activeFilter={activeFilter} filterChange={filterChange} />}
     </section>

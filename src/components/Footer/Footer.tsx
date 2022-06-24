@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { deleteAllTodo } from "../../reducers/todosSlice";
+import { deleteAllTodo } from "../../reducers/tasks";
 
 
 const FILTERS_BTN = [
@@ -46,7 +46,7 @@ const Footer: React.FC<Props> = ({ count, activeFilter, completedCount, filterCh
             <a
               href={`#/${id}`}
               className={id === activeFilter ? 'selected' : ''}
-              onClick={filterChange(id)}
+              onClick={() => {filterChange(id)}}
             >
               {text}
             </a>

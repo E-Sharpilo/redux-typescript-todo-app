@@ -1,9 +1,9 @@
-import TodoItem from '../TodoItem/TodoItem';
+import TaskItem from '../TaskItem/TodoItem';
 import React from "react";
-import { Todo } from '../../interfaces/todos';
+import { Task } from '../../types/task';
 
 type Props = {
-  tasksList: Todo[]
+  tasksList: Task[]
 }
 
 const TodoList: React.FC<Props> = ({ tasksList }) => {
@@ -12,7 +12,7 @@ const TodoList: React.FC<Props> = ({ tasksList }) => {
       <ul className="todo-list">
         {
           tasksList.map(({ id, title, isCompleted }) => (
-            <TodoItem key={id} id={id} title={title} isCompleted={isCompleted} />
+            <TaskItem key={id} id={id} title={title} isCompleted={isCompleted} />
           ))
         }
       </ul>
