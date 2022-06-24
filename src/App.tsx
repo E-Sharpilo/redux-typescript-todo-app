@@ -8,6 +8,7 @@ import { saveTodo } from "./reducers/todosSlice";
 import { selectTodoList } from "./selectors/selectTodoList";
 import { selectFilter } from "./selectors/selectFilter";
 import { Todo } from "./interfaces/todos";
+import { changeFilter } from "./reducers/filterSlice";
 
 const App: React.FC = () => {
   const tasksList = useSelector(selectTodoList)
@@ -42,6 +43,10 @@ const App: React.FC = () => {
     }
   }, [])
 
+  const filterChange = (id: string) => {    
+    dispatch(changeFilter(id))
+  }
+
   const filteredTasks = useMemo(() => {
     return filterTasks(tasksList, activeFilter)
   }, [activeFilter, filterTasks, tasksList])
@@ -54,7 +59,7 @@ const App: React.FC = () => {
     <section className="todoapp">
       <Header addTodo={addTodo} setTodoTitle={setTodoTitle} todoTitle={todoTitle} />
       <TodoList tasksList={filteredTasks} />
-      {!!tasksList.length && <Footer completedCount={completedCount} count={taskCount} activeFilter={activeFilter} />}
+      {!!tasksList.length && <Footer completedCount={completedCount} count={taskCount} activeFilter={activeFilter} filterChange={filterChange} />}
     </section>
   )
 }

@@ -4,7 +4,7 @@ import { setCheck, deleteTodo, changeTitleTodo } from "../../reducers/todosSlice
 import { Todo } from "../../interfaces/todos";
 import classNames from 'classnames';
 
-export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
+const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
   const [newTitle, setNewTitle] = useState(title)
   const [isEditing, setIsEditing] = useState('0')
   const inputElement = useRef<HTMLInputElement>(null)
@@ -49,6 +49,11 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
   }, [id])
 
 
+  const handleNewTitle = (event:React.FormEvent<HTMLInputElement>) => {
+    setNewTitle(event.currentTarget.value)
+  }
+
+
 
   return (
     <li
@@ -80,12 +85,14 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
       <input
         ref={inputElement}
         value={newTitle || title}
-        onChange={(e) => setNewTitle(e.target.value)}
+        onChange={handleNewTitle}
         onKeyDown={(e) => changeTitleEnter(e, id)}
-        onBlur={() => { changeTitleOnBlur(id)}}
+        onBlur={() => { changeTitleOnBlur(id) }}
         type="text"
         className="edit"
       />
     </li>
   )
 }
+
+export default React.memo(TodoItem)

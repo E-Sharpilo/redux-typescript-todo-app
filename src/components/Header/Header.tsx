@@ -1,4 +1,7 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { toggleAll } from "../../reducers/todosSlice"
+import { selectTodoList } from '../../selectors/selectTodoList'
 
 type Props = {
   setTodoTitle: (value: string) => void
@@ -7,6 +10,13 @@ type Props = {
 }
 
 const Header: React.FC<Props> = ({ addTodo, setTodoTitle, todoTitle }) => {
+
+  const tasksList = useSelector(selectTodoList)
+
+  const dispatch = useDispatch()
+  const toggleAllTasks = useCallback(() => {
+    dispatch(toggleAll())
+  }, [dispatch])
 
   const submitHandle = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,9 +31,25 @@ const Header: React.FC<Props> = ({ addTodo, setTodoTitle, todoTitle }) => {
     setTodoTitle(event.target.value)
   }, [setTodoTitle])
 
+  const isChecked = useMemo(() => {
+    return tasksList.filter(todo => !todo.isCompleted).length === 0
+  }, [tasksList])
+
   return (
     <header className="header">
       <h1>Todo App</h1>
+      {!!tasksList.length && (
+        <>
+          <input
+            type="checkbox"
+            id="toggle-all"
+            className="toggle-all"
+            checked={isChecked}
+            onChange={toggleAllTasks}
+          />
+          <label htmlFor="toggle-all">Mark all as complete</label>
+        </>
+      )}
       <form
         onSubmit={submitHandle}
       >
