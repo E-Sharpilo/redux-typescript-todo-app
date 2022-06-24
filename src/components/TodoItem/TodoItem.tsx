@@ -25,7 +25,7 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
     dispatch(deleteTodo(id))
   }, [dispatch, id])
 
-  const changeTitleEnter = (event: React.KeyboardEvent, todoId: string) => {
+  const changeTitleEnter = useCallback((event: React.KeyboardEvent, todoId: string) => {
     if (event.key === 'Enter') {
       dispatch(changeTitleTodo({
         id: todoId,
@@ -33,15 +33,20 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
       }))
       setIsEditing('0')
     }
-  };
+  }, [dispatch, newTitle])
 
-  const changeTitleOnBlur = (todoId: string) => {
+  const changeTitleOnBlur = useCallback((todoId: string) => {
     dispatch(changeTitleTodo({
       id: todoId,
       title: newTitle
     }))
     setIsEditing('0')
-  }
+  }, [dispatch, newTitle])
+
+  const handleDblClick = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    setIsEditing(id);
+  }, [id])
 
 
 
@@ -51,10 +56,7 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
         'completed': isCompleted,
         'editing': isEditing === id,
       })}
-      onDoubleClick={(event) => {
-        event.preventDefault();
-        setIsEditing(id);
-      }}
+      onDoubleClick={handleDblClick}
     >
       <div className="view">
         <input
@@ -80,7 +82,7 @@ export const TodoItem: React.FC<Todo> = ({ title, isCompleted, id }) => {
         value={newTitle || title}
         onChange={(e) => setNewTitle(e.target.value)}
         onKeyDown={(e) => changeTitleEnter(e, id)}
-        onBlur={() => { changeTitleOnBlur(id) }}
+        onBlur={() => { changeTitleOnBlur(id)}}
         type="text"
         className="edit"
       />
