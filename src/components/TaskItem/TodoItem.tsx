@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Task } from "../../types/task";
 import classNames from 'classnames';
 import { useAppDispatch } from "../../store";
-import { toggleStatus } from "../../api/api";
+import { changeTitleTask, deleteTask, toggleStatus } from "../../api/api";
 
 const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
   const [newTitle, setNewTitle] = useState(title)
@@ -22,24 +22,24 @@ const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
   }, [dispatch, id])
 
   const handleDelete = useCallback(() => {
-    // dispatch(deleteTask(id))
+    dispatch(deleteTask(id))
   }, [dispatch, id])
 
   const changeTitleEnter = useCallback((event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
-      // dispatch(changeTitleTask({
-      //   id,
-      //   title: newTitle
-      // }))
+      dispatch(changeTitleTask({
+        id,
+        title: newTitle
+      }))
       setIsEditing(false)
     }
   }, [dispatch, id, newTitle])
 
   const changeTitleOnBlur = useCallback(() => {
-    // dispatch(changeTitleTask({
-    //   id,
-    //   title: newTitle
-    // }))
+    dispatch(changeTitleTask({
+      id,
+      title: newTitle
+    }))
     setIsEditing(false)
   }, [dispatch, id, newTitle])
 

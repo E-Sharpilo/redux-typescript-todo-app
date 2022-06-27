@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
+import { ToggleAll } from "../../api/api"
 
 import { selectTasksList } from '../../selectors/tasks'
+import { useAppDispatch } from "../../store"
 
 type Props = {
   setTodoTitle: (value: string) => void
@@ -11,10 +13,10 @@ type Props = {
 
 const Header: React.FC<Props> = ({ addTask: addTodo, setTodoTitle, todoTitle }) => {
   const tasksList = useSelector(selectTasksList)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const toggleAllTasks = useCallback(() => {
-    // dispatch(toggleAll())
+    dispatch(ToggleAll())
   }, [dispatch])
 
   const submitHandle = useCallback(

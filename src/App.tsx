@@ -8,10 +8,11 @@ import { selectTasksList } from "./selectors/tasks";
 import { selectFilter } from "./selectors/filter";
 import { Task } from "./types/task";
 import { changeFilter } from "./reducers/filter";
-import { useAppDispatch } from "./store";
+import { useAppDispatch, useAppSelector } from "./store";
 import { addTask, getTasks } from "./api/api";
 
 const App: React.FC = () => {
+  const {loading, error} = useAppSelector(state => state.tasks)
   const tasksList = useSelector(selectTasksList)
   const activeFilter = useSelector(selectFilter)
   const dispatch = useAppDispatch()
@@ -24,7 +25,7 @@ const App: React.FC = () => {
 
   const addNewTask = useCallback(() => {
     if (taskTitle.trim().length) {
-      dispatch(addTask(taskTitle))
+      dispatch(addTask(taskTitle.trim()))
       setTaskTitle('')
     }
   }, [dispatch, taskTitle])
@@ -60,6 +61,8 @@ const App: React.FC = () => {
 
   return (
     <section className="todoapp">
+      {loading && <h2>Loading...</h2>}
+      {error && <h2>{error}</h2>}
       <Header addTask={addNewTask} setTodoTitle={setTaskTitle} todoTitle={taskTitle} />
       <TodoList tasksList={filteredTasks} />
       {!!tasksList.length && <Footer completedCount={completedCount} count={taskCount} activeFilter={activeFilter} filterChange={filterChange} />}

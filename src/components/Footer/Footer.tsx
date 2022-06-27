@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { deleteAllCompleted } from "../../api/api";
+import { useAppDispatch } from "../../store";
 
 
 
@@ -26,10 +27,10 @@ type Props = {
 }
 
 const Footer: React.FC<Props> = ({ count, activeFilter, completedCount, filterChange }) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const clearCompeted = useCallback(() => {
-    // dispatch(deleteAllTasks())
+    dispatch(deleteAllCompleted())
   }, [dispatch])
 
 

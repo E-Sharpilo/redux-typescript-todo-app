@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { addTask, getTasks, toggleStatus } from "../api/api";
+import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { addTask, changeTitleTask, deleteAllCompleted, deleteTask, getTasks, ToggleAll, toggleStatus } from "../api/api";
 import { TasksList } from "../types/tasksList";
 
 const initialState: TasksList = {
@@ -11,34 +11,7 @@ const initialState: TasksList = {
 const taskSlice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {
-    // saveTask: (state, action) => {
-    //   state.taskList.push(action.payload)
-    // },
-    // setCheck: (state, action) => {
-    //  
-    // },
-    // deleteTask: (state, action) => {
-    //   state.taskList = state.taskList.filter(todo => todo.id !== action.payload)
-    // },
-    // deleteAllTasks: (state) => {
-    //   state.taskList = state.taskList.filter(todo => todo.isCompleted === false)
-    // },
-    // toggleAll: (state) => {
-    //   if (state.taskList.filter(task => !task.isCompleted).length === 0) {
-    //     state.taskList.forEach(task => task.isCompleted = false);
-    //   } else {
-    //     state.taskList.forEach(task => task.isCompleted = true);
-    //   }
-    // },
-    // changeTitleTask: (state, action) => {
-    //   state.taskList.forEach(task => {
-    //     if (action.payload.id === task.id) {
-    //       task.title = action.payload.title
-    //     }
-    //   })
-    // }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.pending, (state) => {
@@ -53,7 +26,9 @@ const taskSlice = createSlice({
         state.error = null
       })
       .addCase(addTask.fulfilled, (state, action) => {
+
         state.taskList.push(action.payload)
+        console.log(state.taskList);
       })
       .addCase(toggleStatus.fulfilled, (state, action) => {
         const task = state.taskList.find(item => item.id === action.payload.id)
@@ -62,14 +37,29 @@ const taskSlice = createSlice({
           task.completed = !task.completed
         }
       })
+      .addCase(changeTitleTask.fulfilled, (state, action) => {
+        const task = state.taskList.find(item => item.id === action.payload.id)
+
+        if(task) {
+          task.title = action.payload.title
+        }
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.taskList = state.taskList.filter(todo => todo.id !== action.payload)
+      })
+      .addCase(deleteAllCompleted.fulfilled, (state, action) => {
+        state.taskList = action.payload
+      })
+      .addCase(ToggleAll.fulfilled, (state, action) => {
+        state.taskList = action.payload
+      })
+      .addMatcher((action: AnyAction)=> {
+        return action.type.endsWith('rejected')
+      }, (state, action: PayloadAction<string>) =>{
+        state.error = action.payload;
+        state.loading = false;
+      })
   }
 })
 
-// export const {
-//   saveTask,
-//   setCheck,
-//   deleteTask,
-//   deleteAllTasks,
-//   toggleAll,
-//   changeTitleTask} = taskSlice.actions
 export default taskSlice.reducer;
