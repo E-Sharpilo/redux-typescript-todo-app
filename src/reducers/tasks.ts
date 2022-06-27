@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTask, getTasks } from "../api/api";
+import { addTask, getTasks, toggleStatus } from "../api/api";
 import { TasksList } from "../types/tasksList";
 
 const initialState: TasksList = {
@@ -16,11 +16,7 @@ const taskSlice = createSlice({
     //   state.taskList.push(action.payload)
     // },
     // setCheck: (state, action) => {
-    //   state.taskList.forEach(task => {
-    //     if (action.payload === task.id) {
-    //       task.isCompleted = !task.isCompleted
-    //     }
-    //   })
+    //  
     // },
     // deleteTask: (state, action) => {
     //   state.taskList = state.taskList.filter(todo => todo.id !== action.payload)
@@ -58,6 +54,13 @@ const taskSlice = createSlice({
       })
       .addCase(addTask.fulfilled, (state, action) => {
         state.taskList.push(action.payload)
+      })
+      .addCase(toggleStatus.fulfilled, (state, action) => {
+        const task = state.taskList.find(item => item.id === action.payload.id)
+
+        if(task) {
+          task.completed = !task.completed
+        }
       })
   }
 })

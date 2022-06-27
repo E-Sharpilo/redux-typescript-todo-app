@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Task } from "../../types/task";
 import classNames from 'classnames';
+import { useAppDispatch } from "../../store";
+import { toggleStatus } from "../../api/api";
 
 const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
   const [newTitle, setNewTitle] = useState(title)
@@ -15,9 +16,9 @@ const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
     }
   })
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const handleCheck = useCallback(() => {
-    // dispatch(setCheck(id))
+    dispatch(toggleStatus(id))
   }, [dispatch, id])
 
   const handleDelete = useCallback(() => {
