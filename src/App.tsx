@@ -1,36 +1,62 @@
-import { Footer } from "./components/Footer/Footer";
-import { Header } from "./components/Header/Header";
-import { TodoList } from "./components/TodoList/TodoList";
-import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-
-import { saveTodo, selectTodoList } from "./reducers/todosSlice";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import TodoList from "./components/TaskList/TasksList";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { changeFilter } from "./reducers/filter";
+import { useAppDispatch, useAppSelector } from "./store";
+import { addTask, getTasks } from "./api/api";
 
 const App: React.FC = () => {
-  const tasksList = useSelector(selectTodoList)
-  const dispatch = useDispatch()
+  const {loading, error} = useAppSelector(state => state.tasks)
+  const tasksList = useAppSelector(state => state.tasks.taskList)
+  const activeFilter = useAppSelector(state => state.filter)
+  const dispatch = useAppDispatch()
+  const [taskTitle, setTaskTitle] = useState<string>('')
 
-  const [activeFilter, setActiveFilter] = useState('all')
-  const [todoTitle, setTodoTitle] = useState<string>('')
-  const isTasksExist = tasksList && tasksList.length > 0
 
-  const handleInputChange = (value: Todo['title']) => {
-    setTodoTitle(value)
-  }
+  useEffect(() => {
+    dispatch(getTasks())
+  }, [dispatch])
 
-  const addTodo = () => {
-    dispatch(saveTodo({
-      id: Date.now().toString(),
-      title: todoTitle,
-      isCompleted: false
-    }))
-  }
+  const addNewTask = useCallback(() => {
+    if (taskTitle.trim().length) {
+      dispatch(addTask(taskTitle.trim()))
+      setTaskTitle('')
+    }
+  }, [dispatch, taskTitle])
+
+  const taskCount = useMemo(() => {
+    return tasksList.filter(todo => todo.completed === false).length
+  }, [tasksList])
+
+  const filterTasks = useCallback(() => {
+    switch (activeFilter) {
+      case 'completed':
+        return tasksList.filter(task => task.completed)
+
+      case 'active':
+        return tasksList.filter(task => !task.completed)
+
+      default:
+        return tasksList
+    }
+  }, [activeFilter, tasksList])
+
+  const filterChange = useCallback((id: string) => {
+    dispatch(changeFilter(id))
+  },[dispatch])
+
+  const completedCount = useMemo(() => {
+    return tasksList.filter(todo => todo.completed === true).length
+  }, [tasksList])
 
   return (
     <section className="todoapp">
-      <Header addTodo={addTodo} handleInputChange={handleInputChange} todoTitle={todoTitle} />
-      <TodoList tasksList={tasksList} />
-      <Footer count={tasksList.length} activeFilter={activeFilter} />
+      {loading && <h2>Loading...</h2>}
+      {error && <h2>{error}</h2>}
+      <Header addTask={addNewTask} setTodoTitle={setTaskTitle} todoTitle={taskTitle} />
+      <TodoList tasksList={filterTasks()} />
+      {!!tasksList.length && <Footer completedCount={completedCount} count={taskCount} activeFilter={activeFilter} filterChange={filterChange} />}
     </section>
   )
 }

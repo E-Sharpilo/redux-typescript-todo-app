@@ -8,8 +8,6 @@ import './styles/index.css';
 import './styles/todo-list.css';
 import './styles/filters.css';
 
-
-
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
