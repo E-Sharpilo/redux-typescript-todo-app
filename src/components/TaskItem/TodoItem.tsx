@@ -8,6 +8,7 @@ const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
   const [newTitle, setNewTitle] = useState(title)
   const [isEditing, setIsEditing] = useState(false)
   const inputElement = useRef<HTMLInputElement>(null)
+  const dispatch = useAppDispatch()
 
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
     }
   })
 
-  const dispatch = useAppDispatch()
+
   const handleCheck = useCallback(() => {
     dispatch(toggleStatus(id))
   }, [dispatch, id])
@@ -49,9 +50,9 @@ const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
   }, [])
 
 
-  const handleNewTitle = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleNewTitle = useCallback((event: React.FormEvent<HTMLInputElement>) => {
     setNewTitle(event.currentTarget.value)
-  }
+  }, [])
 
 
 
@@ -94,31 +95,31 @@ const TodoItem: React.FC<Task> = ({ title, completed, id }) => {
       </li>
     ) : (
       <li
-      className={classNames({
-        'completed': completed,
-      })}
-      onDoubleClick={handleDblClick}
-    >
-      <div className="view">
-        <input
-          type="checkbox"
-          className="toggle"
-          checked={completed}
-          onChange={handleCheck}
-        />
-        <label>
-          {title}
+        className={classNames({
+          'completed': completed,
+        })}
+        onDoubleClick={handleDblClick}
+      >
+        <div className="view">
           <input
-            hidden
+            type="checkbox"
+            className="toggle"
+            checked={completed}
+            onChange={handleCheck}
           />
-        </label>
-        <button
-          type="button"
-          className="destroy"
-          onClick={handleDelete}
-        ></button>
-      </div>
-    </li>
+          <label>
+            {title}
+            <input
+              hidden
+            />
+          </label>
+          <button
+            type="button"
+            className="destroy"
+            onClick={handleDelete}
+          ></button>
+        </div>
+      </li>
     )
   )
 }
