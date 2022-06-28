@@ -2,18 +2,14 @@ import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import TodoList from "./components/TaskList/TasksList";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from 'react-redux';
-
-import { selectTasksList } from "./selectors/tasks";
-import { selectFilter } from "./selectors/filter";
 import { changeFilter } from "./reducers/filter";
 import { useAppDispatch, useAppSelector } from "./store";
 import { addTask, getTasks } from "./api/api";
 
 const App: React.FC = () => {
   const {loading, error} = useAppSelector(state => state.tasks)
-  const tasksList = useSelector(selectTasksList)
-  const activeFilter = useSelector(selectFilter)
+  const tasksList = useAppSelector(state => state.tasks.taskList)
+  const activeFilter = useAppSelector(state => state.filter)
   const dispatch = useAppDispatch()
   const [taskTitle, setTaskTitle] = useState<string>('')
 
